@@ -38,7 +38,7 @@
       this.wistiaInfo = {};
       this.baseUrl = protocol + '//fast.wistia.com/embed/iframe/';
       this.videoOptions = WistiaTech.parseUrl(this.options_.source.src);
-      this.videoId = this.videoOptions.videoId;
+      this.videoId = this.videoOptions.videoId + "_" + parseInt(Math.random() * 1000);
       this.playedId = this.options_.playerId;
 
       var divWrapper = videojs.createEl('div', {
@@ -136,10 +136,6 @@
       this.wistiaVideo.bind('secondchange', function(s) {
         self.wistiaInfo.time = s;
         self.player_.trigger('timeupdate');
-
-        if( self.wistiaVideo.percentWatched() >= 1) {
-          self.onFinish();
-        }
       });
 
       this.wistiaVideo.bind('volumechange', function(v) {
