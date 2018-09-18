@@ -125,17 +125,11 @@
         var players = videojs.getPlayers();
         if (players) {
           var player = players[this.playedId];
-          if (!player) {
-            return;
-          }
-          if (player.controls()) {
+          if (player && player.controls()) {
             var videos = this.player_.el_.getElementsByTagName('video');
             if (videos.length) {
               videos[0].style['pointerEvents'] = 'none';
             }
-          } else {
-            var divWrapper = player.el_.querySelector(".vjs-iframe-blocker")
-            divWrapper.setAttribute('style', 'display: none;');
           }
         }
       }.bind(this));
