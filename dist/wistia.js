@@ -1,11 +1,10 @@
 (function (root, factory) {
   if(typeof define === 'function' && define.amd) {
     define(['video.js'], function(videojs){
-      return root.WistiaTech = factory(videojs.default || videojs)
+      return (root.WistiaTech = factory(videojs));
     });
   } else if(typeof module === 'object' && module.exports) {
-    var videojs = require('video.js');
-    module.exports = (root.WistiaTech = factory(videojs.default || videojs));
+    module.exports = (root.WistiaTech = factory(require('video.js')));
   } else {
     root.WistiaTech = factory(root.videojs);
   }
@@ -213,10 +212,6 @@
       this.wistiaVideo.time(this.wistiaInfo.time);
       this.trigger('timeupdate');
       this.trigger('seeked');
-    },
-
-    playbackRate: function() {
-        return 1;
     },
 
     onError: function(error){
