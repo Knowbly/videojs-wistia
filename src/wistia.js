@@ -42,7 +42,7 @@
       this.videoId = this.videoOptions.videoId + "_" + parseInt(Math.random() * 1000);
       this.playedId = this.options_.playerId;
 
-      var div = videojs.createEl('div', {
+      var divWrapper = videojs.createEl('div', {
         id: this.videoId,
         className: this.videoOptions.classString,
         width: this.options_.width || "100%",
@@ -53,16 +53,7 @@
         src: protocol + "//fast.wistia.com/assets/external/E-v1.js"
       });
 
-      var divWrapper = document.createElement('div');
-      divWrapper.setAttribute('id', 'wistia-wrapper');
-      divWrapper.appendChild(div);
-
-      var divBlocker = document.createElement('div');
-      divBlocker.setAttribute('class', 'vjs-iframe-blocker');
-      divBlocker.setAttribute('style', 'position:absolute;top:0;left:0;width:100%;height:100%');
-
-      divWrapper.appendChild(divBlocker);
-      div.insertBefore(this.wistiaScriptElement, div.firstChild);
+      divWrapper.insertBefore(this.wistiaScriptElement, divWrapper.firstChild);
 
       this.initPlayer();
 
@@ -99,10 +90,6 @@
       };
     },
 
-    ended: function() {
-      return (this.wistiaInfo.state === WistiaState.ENDED);
-    },
-
     onLoad: function() {
       this.wistiaInfo = {
         state: WistiaState.UNSTARTED,
@@ -110,7 +97,7 @@
         muted: false,
         muteVolume: 1,
         time: 0,
-        duration: this.wistiaVideo.duration(),
+        duration: 0,
         buffered: 0,
         url: this.baseUrl + this.videoId,
         error: null
@@ -126,17 +113,11 @@
         var players = videojs.getPlayers();
         if (players) {
           var player = players[this.playedId];
-          if (!player) {
-            return;
-          }
-          if (player.controls()) {
+          if (player && player.controls()) {
             var videos = this.player_.el_.getElementsByTagName('video');
             if (videos.length) {
               videos[0].style['pointerEvents'] = 'none';
             }
-          } else {
-            var divWrapper = player.el_.querySelector(".vjs-iframe-blocker")
-            divWrapper.setAttribute('style', 'display: none;');
           }
         }
       }.bind(this));
@@ -156,6 +137,10 @@
       this.wistiaVideo.bind('secondchange', function(s) {
         self.wistiaInfo.time = s;
         self.player_.trigger('timeupdate');
+      });
+
+      this.wistiaVideo.bind('volumechange', function(v) {
+        self.setVolume(v);
       });
 
       this.wistiaVideo.bind('end', function(t) {
@@ -241,19 +226,6 @@
       }
 
       return { code: 'Wistia unknown error (' + this.errorNumber + ')' };
-    },
-
-    playbackRate: function() {
-      return this.suggestedRate ? this.suggestedRate : 1;
-    },
-    
-    setPlaybackRate: function(suggestedRate) {
-      if (!this.wistiaVideo) {
-        return;
-      }
-      var d = this.wistiaVideo.playbackRate(suggestedRate);
-      this.suggestedRate = suggestedRate;
-      this.trigger('ratechange');
     },
 
     src: function(src) {
