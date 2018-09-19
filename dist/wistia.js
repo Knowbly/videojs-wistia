@@ -215,6 +215,10 @@
       this.trigger('seeked');
     },
 
+    playbackRate: function() {
+        return 1;
+    },
+
     onError: function(error){
       this.error = error;
       this.trigger('error');
