@@ -301,6 +301,14 @@
       return this.wistiaInfo.duration || 0;
     },
 
+    seekable: function() {
+      if (!this.player_) {
+        return videojs.createTimeRange();
+      }
+
+      return videojs.createTimeRange(0, this.wistiaInfo.duration);
+    },
+
     buffered: function() {
       return videojs.createTimeRange(0, (this.wistiaInfo.buffered * this.wistiaInfo.duration) || 0);
     },
