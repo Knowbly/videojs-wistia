@@ -5,7 +5,7 @@
     });
   } else if(typeof module === 'object' && module.exports) {
     var videojs = require('video.js');
-    module.exports = (root.WistiaTech = factory(videojs.default || videojs));
+    module.exports = factory(videojs.default || videojs);
   } else {
     root.WistiaTech = factory(root.videojs);
   }
