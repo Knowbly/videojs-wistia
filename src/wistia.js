@@ -42,14 +42,15 @@
       this.videoId = this.videoOptions.videoId + "_" + parseInt(Math.random() * 1000);
       this.playedId = this.options_.playerId;
 
-      var div = videojs.createEl('div', {
+      var createEl = videojs.dom.createEl || videojs.createEl;
+      var div = createEl('div', {
         id: this.videoId,
         className: this.videoOptions.classString,
         width: this.options_.width || "100%",
         height: this.options_ .height || "100%"
       });
 
-      this.wistiaScriptElement = videojs.createEl('script', {
+      this.wistiaScriptElement = createEl('script', {
         src: protocol + "//fast.wistia.com/assets/external/E-v1.js"
       });
 
@@ -153,7 +154,8 @@
         self.onSeek({seconds: currentTime});
       });
 
-      this.wistiaVideo.bind('secondchange', function(s) {
+      this.wistiaVideo.bind('timechange', function(s) {
+        s = s > self.wistiaVideo.duration() ? self.wistiaVideo.duration() : s;
         self.wistiaInfo.time = s;
         self.player_.trigger('timeupdate');
       });
