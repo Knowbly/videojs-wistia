@@ -29,8 +29,12 @@
     },
 
     dispose: function() {
-      this.wistiaVideo.remove();
+      if (this.wistiaVideo) {
+        this.wistiaVideo.remove();
+      }
+      this.wistiaVideo = null;
       this.el_.parentNode.removeChild(this.el_);
+      Tech.prototype.dispose.call(this);
     },
 
     createEl: function() {
