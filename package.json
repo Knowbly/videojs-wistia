@@ -5,7 +5,7 @@
   "main": "vjs.wistia.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ryanpatrickcook/videojs-wistia.git"
+    "url": "https://github.com/Knowbly/videojs-wistia.git"
   },
   "scripts": {
     "dist": "mkdir -p dist && cp src/wistia.js dist/wistia.js && uglifyjs src/wistia.js -o dist/wistia.min.js",
